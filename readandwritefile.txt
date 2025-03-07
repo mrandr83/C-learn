@@ -1,0 +1,131 @@
+
+
+    #include <stdio.h>
+
+    int main(void) {
+        FILE *ifile;  /* ifile is a variable name - you could use any other name here. 
+                         However, the '*' is important - we are working with a pointer. 
+                         We call this a file pointer. */
+        int i, num, N;
+        
+        ifile = fopen("my_first_file.txt", "r"); /* open file for reading. 
+                                                         The "r" stands for reading. */
+        
+        fscanf(ifile, "%d", &N); /* Read first number from the file.
+                                    Just like scanf(), the only difference is the 
+                                    file pointer that gets passed in as well. */
+                                    
+        printf("There are %d numbers in the file.\n", N);
+        
+        for (i = 0; i<N; i++) {
+            fscanf(ifile, "%d", &num);
+            printf("I read %d from the file. \n", num);
+        }
+        
+        fclose(ifile); /* closes the file */
+        
+        return 0;
+    }
+
+______________________________________________________________________________________________________________________
+
+This requires a file by the name of "my_first_file.txt" to exist in the same directory as the code.Here is a sample file:
+
+9
+56  3  8  -11  0  -45  55  2  78
+
+Then change the code slightly to read from "my_second_file.txt" which contains doubles rather than integers. Sample:
+
+6
+13.5 22.7 8.0 -4.3 2.99 6.66
+
+
+
+    #include <stdio.h>
+
+    int main(void) {
+        FILE *ifile;  
+        int i, num, sum;
+        int N;
+        
+        ifile = fopen("files/my_third_file.txt", "r"); 
+                                    
+        N=0;
+        sum = 0;
+        
+        while (fscanf(ifile, "%d", &num) != EOF) {
+            printf("I read %d from the file. \n", num);
+            sum += num;
+            N++;
+        }
+        
+        fclose(ifile);
+        
+        printf("There are %d numbers in the file.\n", N);
+        printf("The sum of the numbers read is %d.\n", sum); 
+        printf("The average is %.2f.", (float) sum / N);
+        
+        return(0);
+    }
+
+
+
+    #include <stdio.h>
+
+    int main(void) {
+        FILE *ofile;  /* You can use any variable name here, just make sure you 
+                         include the '*'. */
+        char filename[] = "my_first_output_file.txt";
+        int num;
+        
+        ofile = fopen(filename, "w"); //r is read, w is write, a is append
+         
+        do {
+            printf("Please enter a grade. Enter -1 to quit: \n");
+            scanf("%d", &num);
+            if (num != -1)
+                fprintf(ofile, "%d ", num);        
+        } while (num != -1);
+        fclose(ofile);
+        
+        return 0;
+    }
+
+
+
+    #include <stdio.h>
+    #include <string.h>
+
+    int main(void) {
+        FILE *ofile;  /* You can use any variable name here, just make sure you 
+                         include the '*'. */
+        char filename[] = "my_first_output_file.txt";
+        int num, selection;
+        selection = 1;
+        
+        /* Check whether the file already exists: */
+        ofile = fopen(filename, "r"); 
+        if (ofile != NULL) {
+            printf("You already have a file named %s.\n", filename);
+            fclose(ofile);
+            printf("Do you wish to (1) append or (2) overwrite? Enter 1 or 2: \n");
+            scanf("%d", &selection);
+        }
+
+        if (selection == 1) {
+            ofile = fopen(filename, "a"); 
+        } else {
+            ofile = fopen(filename, "w"); 
+        }
+        
+        do {
+            printf("Please enter a grade. Enter -1 to quit: \n");
+            scanf("%d", &num);
+            if (num != -1)
+                fprintf(ofile, "%d ", num);        
+        } while (num != -1);
+        fclose(ofile);
+        
+        return 0;
+    }
+
